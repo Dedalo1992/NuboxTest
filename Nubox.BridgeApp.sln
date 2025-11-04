@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36603.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nubox.BridgeApp.WebAPI", "Nubox.BridgeApp.WebAPI\Nubox.BridgeApp.WebAPI.csproj", "{ED282AC6-224D-4C8E-A385-9FCBD7071276}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Api", "4. Api", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Application", "1. Application", "{82B539F4-4E46-45B1-9BCF-041E5ECE8CAA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Domain", "2. Domain", "{268EBE2F-A501-450D-8A27-F3D2AF42852F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Infrastructure", "3. Infrastructure", "{BE5E2828-F1BA-4252-BD6A-A58C6EC1C667}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nubox.BridgeApp.Application", "Nubox.BridgeApp.Application\Nubox.BridgeApp.Application.csproj", "{A551C6BE-E238-4E49-B5DA-558431F28BF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nubox.BridgeApp.Domain", "Nubox.BridgeApp.Domain\Nubox.BridgeApp.Domain.csproj", "{5C33297C-65E8-4416-B0D4-B8F3AEF8FE60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nubox.BridgeApp.Infrastructure", "Nubox.BridgeApp.Infrastructure\Nubox.BridgeApp.Infrastructure.csproj", "{0A4BC0A5-8790-4DC0-899F-AD5F0CD85A55}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ED282AC6-224D-4C8E-A385-9FCBD7071276}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED282AC6-224D-4C8E-A385-9FCBD7071276}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED282AC6-224D-4C8E-A385-9FCBD7071276}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED282AC6-224D-4C8E-A385-9FCBD7071276}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A551C6BE-E238-4E49-B5DA-558431F28BF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A551C6BE-E238-4E49-B5DA-558431F28BF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A551C6BE-E238-4E49-B5DA-558431F28BF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A551C6BE-E238-4E49-B5DA-558431F28BF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C33297C-65E8-4416-B0D4-B8F3AEF8FE60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C33297C-65E8-4416-B0D4-B8F3AEF8FE60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C33297C-65E8-4416-B0D4-B8F3AEF8FE60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C33297C-65E8-4416-B0D4-B8F3AEF8FE60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A4BC0A5-8790-4DC0-899F-AD5F0CD85A55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A4BC0A5-8790-4DC0-899F-AD5F0CD85A55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A4BC0A5-8790-4DC0-899F-AD5F0CD85A55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A4BC0A5-8790-4DC0-899F-AD5F0CD85A55}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{ED282AC6-224D-4C8E-A385-9FCBD7071276} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{A551C6BE-E238-4E49-B5DA-558431F28BF8} = {82B539F4-4E46-45B1-9BCF-041E5ECE8CAA}
+		{5C33297C-65E8-4416-B0D4-B8F3AEF8FE60} = {268EBE2F-A501-450D-8A27-F3D2AF42852F}
+		{0A4BC0A5-8790-4DC0-899F-AD5F0CD85A55} = {BE5E2828-F1BA-4252-BD6A-A58C6EC1C667}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {337AEC72-9C82-4B14-B4BA-B150D50F0CD0}
+	EndGlobalSection
+EndGlobal
