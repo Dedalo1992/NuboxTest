@@ -8,7 +8,6 @@ using Nubox.BridgeApp.Infrastructure.Repositories;
 using Nubox.BridgeApp.Infrastructure.Services;
 using Polly;
 using Polly.Extensions.Http;
-using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,6 +62,25 @@ app.MapPost("/sync/asistencia", async (string empresaId, PeriodoClave periodoCla
     var ejecucion = await svc.SincronizacionAsync(empresaId, periodoClave, ct);
     return Results.Ok(new { ejecucion.Id, ejecucion.Status, ejecucion.CorrelationId });
 });
+
+app.MapPost("/sync/asistencia/upload", async (
+    string empresaId,
+    string periodoClave,
+    IFormFile file,
+    AsistenciaSyncService svc,
+    ExcelUploadService excelSvc,
+    CancellationToken ct) =>
+{
+    if (file == null || file.Length == 0)
+        return Results.BadRequest("Archivo vacío o no proporcionado.");
+
+    var dtos = await excelSvc.ParseAsync(file.OpenReadStream(), ct);
+
+    var run = await svc.SincronizacionDesdeArchivoAsync(empresaId, periodoClave, dtos, ct);
+
+    return Results.Ok(new { run.Id, run.Status, run.CorrelationId });
+});
+
 
 app.MapGet("/payroll/asistencia/{empresaId}/{periodoClave}",
 async (string empresaId, string periodoClave, AsistenciaQueryService q, CancellationToken ct) =>

@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EPPlus" Version="8.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Nubox.BridgeApp.Domain\Nubox.BridgeApp.Domain.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,5 @@
-﻿using Nubox.BridgeApp.Application.Exceptions;
+﻿using Nubox.BridgeApp.Application.Dto;
+using Nubox.BridgeApp.Application.Exceptions;
 using Nubox.BridgeApp.Application.Interfaces;
 using Nubox.BridgeApp.Domain.Entities;
 using Nubox.BridgeApp.Domain.Interfaces;
@@ -21,7 +22,7 @@ namespace Nubox.BridgeApp.Application.Services
 
         public async Task<Sincronizacion> SincronizacionAsync(string empresaId, PeriodoClave periodoClave, CancellationToken ct)
         {
-            if(string.IsNullOrWhiteSpace(empresaId))
+            if (string.IsNullOrWhiteSpace(empresaId))
                 throw new AppValidationException("empresaId es requerido");
 
             var correlationId = Guid.NewGuid().ToString("N");
@@ -32,7 +33,7 @@ namespace Nubox.BridgeApp.Application.Services
             {
                 var result = await _partnerAsistenciaClient.GetAsistenciaAsync(empresaId, periodoClave, ct);
 
-                foreach(var x in result)
+                foreach (var x in result)
                 {
                     var totalHoras = x.HorasTrabajadas + x.HorasExtras;
 
@@ -59,6 +60,41 @@ namespace Nubox.BridgeApp.Application.Services
                 await _sincronizacionRepository.TerminarAsync(ejecucion.Id, exito: false, error: ex.Message, ct);
                 throw;
             }
+        }
+
+        public async Task<Sincronizacion> SincronizacionDesdeArchivoAsync(string empresaId,string periodoClave,IReadOnlyList<PartnerAsistenciaDTO> dtos, CancellationToken ct)
+        {
+            var correlationId = Guid.NewGuid().ToString("N");
+            var run = await _sincronizacionRepository.IniciarAsync(empresaId, periodoClave, correlationId, ct);
+
+            try
+            {
+                foreach (var item in dtos)
+                {
+                    var resumen = ResumenAsistencia.Create(
+                        empresaId,
+                        item.TrabajadorID,
+                        periodoClave,
+                        item.Rut,
+                        (int)item.HorasTrabajadas,
+                        (int)item.HorasExtras,
+                        item.Ausencias,
+                        item.AusenciaLicenciaMedica,
+                        correlationId
+                    );
+
+                    await _resumenAsistenciaRepository.UpsertAsync(resumen, ct);
+                }
+
+                await _sincronizacionRepository.TerminarAsync(run.Id, true, null, ct);
+            }
+            catch (Exception ex)
+            {
+                await _sincronizacionRepository.TerminarAsync(run.Id, false, ex.Message, ct);
+                throw;
+            }
+
+            return run;
         }
     }
 }
