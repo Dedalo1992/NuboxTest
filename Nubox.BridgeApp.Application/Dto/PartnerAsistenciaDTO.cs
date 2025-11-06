@@ -1,6 +1,6 @@
 ﻿namespace Nubox.BridgeApp.Application.Dto
 {
-    public class PartnerAsistenciaDTO
+    public class PartnerAsistenciaDto
     {
         public string TrabajadorID { get; init; } = default!;
         public string? Rut { get; init; }

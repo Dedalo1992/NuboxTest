@@ -5,6 +5,6 @@ namespace Nubox.BridgeApp.Application.Interfaces
 {
     public interface IPartnerAsistenciaClient
     {
-        Task<IReadOnlyList<PartnerAsistenciaDTO>> GetAsistenciaAsync(string empresaId, PeriodoClave periodoClave, CancellationToken cancellationToken);
+        Task<IReadOnlyList<PartnerAsistenciaDto>> GetAsistenciaAsync(string empresaId, PeriodoClave periodoClave, CancellationToken cancellationToken);
     }
 }

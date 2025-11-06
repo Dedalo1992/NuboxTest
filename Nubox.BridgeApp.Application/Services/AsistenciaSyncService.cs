@@ -62,7 +62,7 @@ namespace Nubox.BridgeApp.Application.Services
             }
         }
 
-        public async Task<Sincronizacion> SincronizacionDesdeArchivoAsync(string empresaId,string periodoClave,IReadOnlyList<PartnerAsistenciaDTO> dtos, CancellationToken ct)
+        public async Task<Sincronizacion> SincronizacionDesdeArchivoAsync(string empresaId,string periodoClave,IReadOnlyList<PartnerAsistenciaDto> dtos, CancellationToken ct)
         {
             var correlationId = Guid.NewGuid().ToString("N");
             var run = await _sincronizacionRepository.IniciarAsync(empresaId, periodoClave, correlationId, ct);

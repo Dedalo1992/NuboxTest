@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Nubox.BridgeApp.Application.Interfaces;
 using Nubox.BridgeApp.Application.Services;
@@ -6,16 +7,23 @@ using Nubox.BridgeApp.Domain.ValueObjects;
 using Nubox.BridgeApp.Infrastructure.Data;
 using Nubox.BridgeApp.Infrastructure.Repositories;
 using Nubox.BridgeApp.Infrastructure.Services;
+using Nubox.BridgeApp.WebAPI.Models;
+using Nubox.BridgeApp.WebAPI.Security;
 using Polly;
 using Polly.Extensions.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//{
+//    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+//        ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+//    options.UseSqlServer(connectionString);
+//});
+
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-        ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-    options.UseSqlServer(connectionString);
+    options.UseInMemoryDatabase("NuboxBridgeDb");
 });
 
 static IAsyncPolicy<HttpResponseMessage> Retry()
@@ -48,7 +56,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddAuthentication(o =>
+{
+    o.DefaultAuthenticateScheme = ApiKeyAuthenticationHandler.SchemeName;
+    o.DefaultChallengeScheme = ApiKeyAuthenticationHandler.SchemeName;
+}).
+AddScheme<AuthenticationSchemeOptions, ApiKeyAuthenticationHandler>(ApiKeyAuthenticationHandler.SchemeName, _ => { });
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
+
+var secured = app.MapGroup("/");
+secured.RequireAuthorization();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -57,32 +76,31 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapPost("/sync/asistencia", async (string empresaId, PeriodoClave periodoClave, AsistenciaSyncService svc, CancellationToken ct) =>
+secured.MapPost("/sync/asistencia", async (string empresaId, PeriodoClave periodoClave, AsistenciaSyncService svc, CancellationToken ct) =>
 {
     var ejecucion = await svc.SincronizacionAsync(empresaId, periodoClave, ct);
     return Results.Ok(new { ejecucion.Id, ejecucion.Status, ejecucion.CorrelationId });
 });
 
-app.MapPost("/sync/asistencia/upload", async (
-    string empresaId,
-    string periodoClave,
-    IFormFile file,
+secured.MapPost("/sync/asistencia/upload", 
+    async (
+    AsistenciaUploadForm form,
     AsistenciaSyncService svc,
     ExcelUploadService excelSvc,
     CancellationToken ct) =>
 {
-    if (file == null || file.Length == 0)
+    if (form.File == null || form.File.Length == 0)
         return Results.BadRequest("Archivo vacío o no proporcionado.");
 
-    var dtos = await excelSvc.ParseAsync(file.OpenReadStream(), ct);
+    var dtos = await excelSvc.ParseAsync(form.File.OpenReadStream(), ct);
 
-    var run = await svc.SincronizacionDesdeArchivoAsync(empresaId, periodoClave, dtos, ct);
+    var run = await svc.SincronizacionDesdeArchivoAsync(form.EmpresaId, form.PeriodoClave, dtos, ct);
 
     return Results.Ok(new { run.Id, run.Status, run.CorrelationId });
 });
 
 
-app.MapGet("/payroll/asistencia/{empresaId}/{periodoClave}",
+secured.MapGet("/payroll/asistencia/{empresaId}/{periodoClave}",
 async (string empresaId, string periodoClave, AsistenciaQueryService q, CancellationToken ct) =>
 {
     var items = await q.GetAsync(empresaId, periodoClave, ct);

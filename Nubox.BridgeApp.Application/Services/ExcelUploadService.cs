@@ -5,7 +5,7 @@ namespace Nubox.BridgeApp.Application.Services
 {
     public sealed class ExcelUploadService
     {
-        public async Task<IReadOnlyList<PartnerAsistenciaDTO>> ParseAsync(Stream fileStream, CancellationToken ct)
+        public async Task<IReadOnlyList<PartnerAsistenciaDto>> ParseAsync(Stream fileStream, CancellationToken ct)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
@@ -13,7 +13,7 @@ namespace Nubox.BridgeApp.Application.Services
 
             var ws = package.Workbook.Worksheets.FirstOrDefault() ?? throw new InvalidOperationException("El archivo Excel no contiene hojas de cálculo.");
 
-            var dtos = new List<PartnerAsistenciaDTO>();
+            var dtos = new List<PartnerAsistenciaDto>();
 
             var row = 2;
             while (true)
@@ -22,7 +22,7 @@ namespace Nubox.BridgeApp.Application.Services
                 var trabajadorId = ws.Cells[row, 1].Text?.Trim();
                 if (string.IsNullOrEmpty(trabajadorId)) break;
 
-                var dto = new PartnerAsistenciaDTO
+                var dto = new PartnerAsistenciaDto
                 {
                     TrabajadorID = trabajadorId,
                     Rut = ws.Cells[row, 2].Text?.Trim(),
