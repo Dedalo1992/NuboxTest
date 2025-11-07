@@ -62,10 +62,10 @@ namespace Nubox.BridgeApp.Application.Services
             }
         }
 
-        public async Task<Sincronizacion> SincronizacionDesdeArchivoAsync(string empresaId,string periodoClave,IReadOnlyList<PartnerAsistenciaDto> dtos, CancellationToken ct)
+        public async Task<Sincronizacion> SincronizacionDesdeArchivoAsync(string empresaId,PeriodoClave periodoClave,IReadOnlyList<PartnerAsistenciaDto> dtos, CancellationToken ct)
         {
             var correlationId = Guid.NewGuid().ToString("N");
-            var run = await _sincronizacionRepository.IniciarAsync(empresaId, periodoClave, correlationId, ct);
+            var run = await _sincronizacionRepository.IniciarAsync(empresaId, periodoClave.ToString(), correlationId, ct);
 
             try
             {
@@ -74,7 +74,7 @@ namespace Nubox.BridgeApp.Application.Services
                     var resumen = ResumenAsistencia.Create(
                         empresaId,
                         item.TrabajadorID,
-                        periodoClave,
+                        periodoClave.ToString(),
                         item.Rut,
                         (int)item.HorasTrabajadas,
                         (int)item.HorasExtras,

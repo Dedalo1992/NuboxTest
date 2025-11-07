@@ -7,7 +7,7 @@ namespace Nubox.BridgeApp.Application.Services
     {
         public async Task<IReadOnlyList<PartnerAsistenciaDto>> ParseAsync(Stream fileStream, CancellationToken ct)
         {
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            ExcelPackage.License.SetNonCommercialPersonal("Test");
 
             using var package = new ExcelPackage(fileStream);
 

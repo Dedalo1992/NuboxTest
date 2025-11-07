@@ -17,7 +17,7 @@ namespace Nubox.BridgeApp.WebAPI.Security
 
         protected override Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            if (!Request.Headers.TryGetValue("x-apy-key", out var provided))
+            if (!Request.Headers.TryGetValue("ApiKey", out var provided))
                 return Task.FromResult(AuthenticateResult.Fail("Api Key no encontrada"));
 
             var appApiKey = _configuration["Security:ApiKey"];

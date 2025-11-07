@@ -10,7 +10,7 @@ namespace Nubox.BridgeApp.Infrastructure.Services
         private readonly HttpClient _httpClient;
         private static readonly JsonSerializerOptions _jsonSerializerOptions = new() { PropertyNameCaseInsensitive = true };
 
-        public PartnerAsistenciaClient() => _httpClient = new HttpClient();
+        public PartnerAsistenciaClient(HttpClient httpClient) => _httpClient = httpClient;
 
         public async Task<IReadOnlyList<PartnerAsistenciaDto>> GetAsistenciaAsync(string empresaId, PeriodoClave periodoClave, CancellationToken ct)
         {
