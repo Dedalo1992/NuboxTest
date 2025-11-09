@@ -27,10 +27,12 @@ namespace Nubox.BridgeApp.Application.Services
 
             var correlationId = Guid.NewGuid().ToString("N");
 
+            //Se inicia el registro de sincronizacion
             var ejecucion = await _sincronizacionRepository.IniciarAsync(empresaId, periodoClave.ToString(), correlationId, ct);
 
             try
             {
+                //Se obtiene la asistencia desde la API del partner
                 var result = await _partnerAsistenciaClient.GetAsistenciaAsync(empresaId, periodoClave, ct);
 
                 foreach (var x in result)

@@ -19,17 +19,17 @@ namespace Nubox.BridgeApp.Application.Services
             while (true)
             {
                 ct.ThrowIfCancellationRequested();
-                var trabajadorId = ws.Cells[row, 1].Text?.Trim();
+                var trabajadorId = ws.Cells[row, 2].Text?.Trim();
                 if (string.IsNullOrEmpty(trabajadorId)) break;
 
                 var dto = new PartnerAsistenciaDto
                 {
                     TrabajadorID = trabajadorId,
-                    Rut = ws.Cells[row, 2].Text?.Trim(),
-                    HorasTrabajadas = int.TryParse(ws.Cells[row, 3].Text?.Trim(), out var horasTrabajadas) ? horasTrabajadas : 0,
-                    HorasExtras = int.TryParse(ws.Cells[row, 4].Text?.Trim(), out var horasExtras) ? horasExtras : 0,
-                    Ausencias = int.TryParse(ws.Cells[row, 5].Text?.Trim(), out var ausencias) ? ausencias : 0,
-                    AusenciaLicenciaMedica = int.TryParse(ws.Cells[row, 6].Text?.Trim(), out var ausenciaLicenciaMedica) ? ausenciaLicenciaMedica : 0
+                    Rut = ws.Cells[row, 3].Text?.Trim(),
+                    HorasTrabajadas = int.TryParse(ws.Cells[row, 4].Text?.Trim(), out var horasTrabajadas) ? horasTrabajadas : 0,
+                    HorasExtras = int.TryParse(ws.Cells[row, 5].Text?.Trim(), out var horasExtras) ? horasExtras : 0,
+                    Ausencias = int.TryParse(ws.Cells[row, 6].Text?.Trim(), out var ausencias) ? ausencias : 0,
+                    AusenciaLicenciaMedica = int.TryParse(ws.Cells[row, 7].Text?.Trim(), out var ausenciaLicenciaMedica) ? ausenciaLicenciaMedica : 0
                 };
 
                 dtos.Add(dto);

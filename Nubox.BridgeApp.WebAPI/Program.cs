@@ -80,6 +80,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+//Gatilla sincronizacion desde Api del partner para obtener asistencias
 secured.MapPost("/sync/asistencia",
 async (string empresaId, PeriodoClave periodoClave, AsistenciaSyncService svc, CancellationToken ct) =>
 {
@@ -87,6 +89,7 @@ async (string empresaId, PeriodoClave periodoClave, AsistenciaSyncService svc, C
     return Results.Ok(new { ejecucion.Id, ejecucion.Status, ejecucion.CorrelationId });
 });
 
+//Obtiene asistencias desde un archivo Excel
 var upload = secured.MapPost("/sync/asistencia/upload",
 async (
     [FromForm] string empresaId,
@@ -108,6 +111,7 @@ async (
 
 upload.DisableAntiforgery();
 
+//Obtiene el resumen de asistencias ya procesadas para el calculo de remuneraciones
 secured.MapGet("/payroll/asistencia/{empresaId}/{periodoClave}",
 async (string empresaId, string periodoClave, AsistenciaQueryService q, CancellationToken ct) =>
 {

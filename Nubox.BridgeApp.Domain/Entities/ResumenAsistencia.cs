@@ -1,4 +1,6 @@
-﻿namespace Nubox.BridgeApp.Domain.Entities
+﻿using Nubox.BridgeApp.Domain.Services;
+
+namespace Nubox.BridgeApp.Domain.Entities
 {
     public class ResumenAsistencia
     {
@@ -69,7 +71,7 @@
             HorasExtras = horasExtras;
             Ausencias = ausencias;
             AusenciaLicenciaMedica = ausenciaLicenciaMedica;
-            TotalHorasRemunerables = horasTrabajadas + horasExtras;
+            TotalHorasRemunerables = CalculadorAsistencia.TotalHorasRemunerables(horasTrabajadas, HorasExtras);
 
             CorrelationId = string.IsNullOrWhiteSpace(correlationId) ? Guid.NewGuid().ToString("N") : correlationId.Trim();
             CalculatedAtUtc = DateTime.UtcNow;
